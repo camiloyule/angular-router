@@ -1,59 +1,77 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './pages/home/home.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { MyCartComponent } from './pages/my-cart/my-cart.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { RecoveryComponent } from './pages/recovery/recovery.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { LayoutComponent } from './website/components/layout/layout.component';
+import { HomeComponent } from './website/pages/home/home.component';
+import { NotFoundComponent } from './website/pages/not-found/not-found.component';
+import { CategoryComponent } from './website/pages/category/category.component';
+import { MyCartComponent } from './website/pages/my-cart/my-cart.component';
+import { LoginComponent } from './website/pages/login/login.component';
+import { RegisterComponent } from './website/pages/register/register.component';
+import { RecoveryComponent } from './website/pages/recovery/recovery.component';
+import { ProfileComponent } from './website/pages/profile/profile.component';
+import { ProductDetailComponent } from './website/pages/product-detail/product-detail.component';
 
 const routes: Routes = [
   {
-    path:'',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'category/:id',
+        component: CategoryComponent,
+      },
+      {
+        path: 'product/:id',
+        component: ProductDetailComponent,
+      },
+      {
+        path: 'notfound',
+        component: NotFoundComponent,
+      },
+      {
+        path: 'mycart',
+        component: MyCartComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'recovery',
+        component: RecoveryComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+    ],
   },
   {
-    path: 'home',
-    component: HomeComponent
+    path: 'cms',
+    loadChildren: () => import('./cms/cms.module').then((m) => m.CmsModule), //for lazy loading helfully
   },
   {
-    path: 'category',
-    component: CategoryComponent
+    path: '**',
+    component: NotFoundComponent,
   },
-  {
-    path: 'notfound',
-    component: NotFoundComponent
-  },
-  {
-    path: 'mycart',
-    component: MyCartComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'recovery',
-    component: RecoveryComponent
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent
-  },
-
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
