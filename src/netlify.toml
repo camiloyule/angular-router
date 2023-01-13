@@ -1,0 +1,6 @@
+[build]
+ publish = "dist/my-store-router"
+ command = "ng build"
+[[redirects]]
+ from = "/*"
+ status= 200
