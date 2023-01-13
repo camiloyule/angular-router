@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { StoreService } from '../../../services/store.service'
 import { AuthService } from '../../../services/auth.service';
@@ -21,7 +21,8 @@ export class NavComponent implements OnInit {
   constructor(
     private storeService: StoreService,
     private authService: AuthService,
-    private categorieService: CategoriesService
+    private categorieService: CategoriesService,
+    private route: Router
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +30,10 @@ export class NavComponent implements OnInit {
       this.counter = products.length;
     });
     this.getCategories();
+    this.authService.user$
+    .subscribe(data=>{
+      this.profile=data;
+    })
   }
   getCategories(){
     this.categorieService.getAll()
@@ -42,10 +47,16 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.loginAndGet('john@mail.com', 'changeme')
-    .subscribe(user => {
-      this.profile = user;
+    this.authService.loginAndGet('admin@mail.com', 'admin123')
+    .subscribe(() => {
+      this.route.navigate(['/profile']);
     });
+  }
+  logOut(){
+    this.authService.logOut();
+    this.profile=null;
+    this.route.navigate(['/home']);
+
   }
 
 }
